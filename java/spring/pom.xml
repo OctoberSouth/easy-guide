@@ -24,6 +24,7 @@
         <module>mongodb</module>
         <module>spring-web-socket</module>
         <module>third-party</module>
+        <module>thymeleaf</module>
     </modules>
 
     <parent>

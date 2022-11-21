@@ -64,6 +64,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--SpringCloud 2020.* 禁用了bootstrap 而注册中心等配置文件需要 bootstrap.yml 为名的配置文件-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

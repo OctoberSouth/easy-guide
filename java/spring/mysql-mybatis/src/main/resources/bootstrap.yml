@@ -1,1 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.137.51:3306/test
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

@@ -25,6 +25,7 @@
         <module>spring-web-socket</module>
         <module>third-party</module>
         <module>thymeleaf</module>
+        <module>basics</module>
     </modules>
 
     <parent>

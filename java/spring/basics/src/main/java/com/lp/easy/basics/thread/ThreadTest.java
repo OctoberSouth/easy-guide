@@ -51,20 +51,54 @@ public class ThreadTest {
     }
 
     /**
-     * CompletableFuture
+     * CompletableFuture 用于线程编排
      */
     public static void completableFuture() {
         System.out.println("方法开始执行");
         //无返回值
 //        CompletableFuture.runAsync(new RunnableO1(), executorService);
         //有返回值
-        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(new Supplier01(), executorService);
-        try {
-            Integer i = future.get();
-            System.out.println(i);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(new Supplier01(), executorService);
+//        try {
+//            Integer i = future.get();
+//            System.out.println(i);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+        //常用方法
+//        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+//                    System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+//                    int i = 10 / 0;
+//                    System.out.println("线程运行结果：" + i);
+//                    return i;
+//                }, executorService)
+//                .whenComplete((res, exception) -> {
+//                    //能感知异常，但是无法修改返回数据
+//                    System.out.println("方法执行结果：" + res);
+//                }).exceptionally(throwable -> {
+//                    // 异常处理 并返回值
+//                    return 10;
+//                });
+        // 方法执行完成后的处理
+//        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+//            System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+//            int i = 10 / 0;
+//            System.out.println("线程运行结果：" + i);
+//            return i;
+//        }, executorService).handle((res, exception) -> {
+//            if (res != null) {
+//                return res * 2;
+//            }
+//            if (exception != null) {
+//                return 0;
+//            }
+//            return 0;
+//        });
+//        try {
+//            System.out.println("执行结果：" + future.get());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         System.out.println("方法执行结束");
     }
 

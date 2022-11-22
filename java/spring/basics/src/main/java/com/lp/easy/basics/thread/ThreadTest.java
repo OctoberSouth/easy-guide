@@ -157,7 +157,7 @@ public class ThreadTest {
 //        }
 
         /**
-         * 两个任务都完成
+         * 多任务处理
          */
         CompletableFuture<Object> future01 = CompletableFuture.supplyAsync(() -> {
             System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
@@ -167,6 +167,9 @@ public class ThreadTest {
         }, executorService);
 
         CompletableFuture<String> future02 = CompletableFuture.supplyAsync(() -> "hello", executorService);
+        /**
+         * 两个任务都完成
+         */
         //无返回值
 //        future01.runAfterBothAsync(future02, () -> {
 //            System.out.println("任务3执行");
@@ -189,8 +192,21 @@ public class ThreadTest {
 //            System.out.println("执行结果" + res);
 //        }, executorService);
         //感知结果，并且有返回值
-        CompletableFuture<Object> future03 = future01.applyToEitherAsync(future02, (res) -> res + "哈哈哈", executorService);
-        System.out.println("线程3执行结果：" + future03.get());
+//        CompletableFuture<Object> future03 = future01.applyToEitherAsync(future02, (res) -> res + "哈哈哈", executorService);
+//        System.out.println("线程3执行结果：" + future03.get());
+
+        //多任务组合 全部执行完毕
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(future01, future02);
+        //等待所有方法执行完毕
+        allOf.get();
+        //可以单独获取每个线程的值
+        System.out.println(future01.get());
+        System.out.println(future02.get());
+        // 一个执行完毕就OK
+        CompletableFuture<Object> anyOf = CompletableFuture.anyOf(future01, future02);
+        //执行完一个就会返回
+        System.out.println(anyOf.get());
+
         System.out.println("方法执行结束");
     }
 

@@ -1,1 +1,10 @@
-
+aliyun:
+  oss:
+    sms:
+      access-key-id: xxxxxxxxxx
+      access-key-secret: xxxxxxxxxxxx
+      msm-endpoint: xxxxxxxxxx
+      bucket: xxxxxxxxxxx
+      oss-endpoint: xxxxxxxxxxx
+server:
+  port: 9999

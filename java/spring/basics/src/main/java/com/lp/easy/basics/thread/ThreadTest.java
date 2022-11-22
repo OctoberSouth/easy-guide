@@ -9,7 +9,7 @@ public class ThreadTest {
     public static ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         completableFuture();
     }
 
@@ -53,11 +53,17 @@ public class ThreadTest {
     /**
      * CompletableFuture 用于线程编排
      */
-    public static void completableFuture() {
+    public static void completableFuture() throws ExecutionException, InterruptedException {
         System.out.println("方法开始执行");
-        //无返回值
+
+        /**
+         * 无返回值
+         */
 //        CompletableFuture.runAsync(new RunnableO1(), executorService);
-        //有返回值
+
+        /**
+         * 有返回值
+         */
 //        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(new Supplier01(), executorService);
 //        try {
 //            Integer i = future.get();
@@ -65,7 +71,10 @@ public class ThreadTest {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        //常用方法
+
+        /**
+         * 常用方法
+         */
 //        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
 //                    System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
 //                    int i = 10 / 0;
@@ -79,7 +88,10 @@ public class ThreadTest {
 //                    // 异常处理 并返回值
 //                    return 10;
 //                });
-        // 方法执行完成后的处理
+
+        /**
+         * 方法执行完成后的处理
+         */
 //        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
 //            System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
 //            int i = 10 / 0;
@@ -99,6 +111,86 @@ public class ThreadTest {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
+
+        /**
+         * 串行化  不能获取到上一步的执行结果
+         */
+//        CompletableFuture.supplyAsync(() -> {
+//                    System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+//                    int i = 10 / 5;
+//                    System.out.println("线程运行结果：" + i);
+//                    return i;
+//                }, executorService)
+//                .thenRunAsync(() -> {
+//                    System.out.println("线程二");
+//                }, executorService);
+
+        /**
+         * 获取上一步结果 但是无返回值
+         */
+//        CompletableFuture.supplyAsync(() -> {
+//                    System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+//                    int i = 10 / 5;
+//                    System.out.println("线程运行结果：" + i);
+//                    return i;
+//                }, executorService)
+//                .thenAcceptAsync(res -> {
+//                    System.out.println("线程二获取到上一个返回值：" + res);
+//                }, executorService);
+
+        /**
+         *能接受上一步的结果，并且有返回值
+         */
+//        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+//                    System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+//                    int i = 10 / 5;
+//                    System.out.println("线程运行结果：" + i);
+//                    return i;
+//                }, executorService)
+//                .thenApplyAsync(res -> {
+//                    return "线程二获取到上一个返回值：" + res;
+//                }, executorService);
+//        try {
+//            System.out.println("执行结果：" + future.get());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+
+        /**
+         * 两个任务都完成
+         */
+        CompletableFuture<Object> future01 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("当前线程名字：" + Thread.currentThread().getName() + "=======当前线程ID：" + Thread.currentThread().getId());
+            int i = 10 / 5;
+            System.out.println("线程运行结果：" + i);
+            return i;
+        }, executorService);
+
+        CompletableFuture<String> future02 = CompletableFuture.supplyAsync(() -> "hello", executorService);
+        //无返回值
+//        future01.runAfterBothAsync(future02, () -> {
+//            System.out.println("任务3执行");
+//        }, executorService);
+        // 可以得到两个返回值 没有返回值
+//        future01.thenAcceptBothAsync(future02, (f1, f2) -> {
+//            System.out.println("线程3， 线程1执行结果：" + f1 + "============线程2执行结果：" + f2);
+//        }, executorService);
+        //可以得到两个返回值，并且有返回数据
+//        CompletableFuture<String> future03 = future01.thenCombineAsync(future02, (f1, f2) -> f2 + f1, executorService);
+//        System.out.println("线程3执行结果：" + future03.get());
+
+        /**
+         * 两个任务完成一个 就执行任务3
+         */
+        //无感知结果
+//        future01.runAfterEitherAsync(future02, () -> System.out.println("任务三开始之前的结果"), executorService);
+        //可以感知一个结果，没有返回值 注意：此方法需要两个返回值一样
+//        future01.acceptEitherAsync(future02, (res) -> {
+//            System.out.println("执行结果" + res);
+//        }, executorService);
+        //感知结果，并且有返回值
+        CompletableFuture<Object> future03 = future01.applyToEitherAsync(future02, (res) -> res + "哈哈哈", executorService);
+        System.out.println("线程3执行结果：" + future03.get());
         System.out.println("方法执行结束");
     }
 

@@ -26,6 +26,7 @@
         <module>third-party</module>
         <module>thymeleaf</module>
         <module>basics</module>
+        <module>web</module>
     </modules>
 
     <parent>

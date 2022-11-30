@@ -1,5 +1,6 @@
 package com.lp.easy.web.config;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 自定义拦截器
  */
+@Component
 public class MyInterceptor implements HandlerInterceptor {
 
     /**
@@ -22,7 +24,7 @@ public class MyInterceptor implements HandlerInterceptor {
      * @return true表示, 执行下一个拦截器, 没有拦截器了就执行controller中的方法;false表示不放行
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         System.out.println("MyInterceptor1 preHandle invoke ,true");
         threadLocal.set("线程数据");
         return true;
@@ -32,7 +34,7 @@ public class MyInterceptor implements HandlerInterceptor {
      * 后处理
      */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         System.out.println("MyInterceptor1 postHandle invoke");
     }
 
@@ -40,7 +42,7 @@ public class MyInterceptor implements HandlerInterceptor {
      * 请求处理完毕调用
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         System.out.println("MyInterceptor1 afterCompletion invoke");
     }
 }

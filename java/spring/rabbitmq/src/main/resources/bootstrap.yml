@@ -1,0 +1,18 @@
+spring:
+  rabbitmq:
+    host: 192.168.137.51
+    port: 5672
+    virtual-host: /
+    #    开启发送端确认
+    publisher-confirm-type: correlated
+    #    开启发送端消息抵达队列确认
+    publisher-returns: true
+    #    只要抵达队列，会以异步发送优先回调我们这个returnConfirm
+    template:
+      mandatory: true
+    listener:
+      simple:
+        #        手动ack消息  只要没有明确告诉MQ签收，消息就会存在，不会丢失
+        acknowledge-mode: manual
+  main:
+    allow-circular-references: true

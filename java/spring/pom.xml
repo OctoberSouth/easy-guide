@@ -28,6 +28,7 @@
         <module>basics</module>
         <module>web</module>
         <module>session</module>
+        <module>rabbitmq</module>
     </modules>
 
     <parent>
